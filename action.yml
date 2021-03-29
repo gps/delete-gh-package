@@ -1,0 +1,21 @@
+name: 'Delete package version'
+description: 'Delete a package version'
+inputs:
+  ORG:
+    description: Name of the organisation. If org is not given, package will be considered to belong to a user.
+    required: false
+  PACKAGE_TYPE:
+    description: Type of supported package. Can be one of npm, maven, rubygems, nuget, docker, or container.
+    required: true
+  PACKAGE_NAME:
+    description:  Name of the package.
+    required: true
+  VERSION:
+    description: Version of the package to be deleted.
+    required: true
+  TOKEN:
+    description: Auth token with delete permission.
+    required: true
+runs:
+  using: node12
+  main: 'dist/index.js'
