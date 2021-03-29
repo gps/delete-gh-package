@@ -43,7 +43,7 @@ Auth token with delete permission.
     PACKAGE_TYPE: npm
     PACKAGE_NAME: package
     VERSION: 0.0.1
-    TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    TOKEN: ${{ secrets.TEST_PACKAGE__RELEASE_DELETE_KEY }}
 ```
 
 ```yml
@@ -53,7 +53,7 @@ Auth token with delete permission.
     PACKAGE_TYPE: npm
     PACKAGE_NAME: package
     VERSION: 0.0.1
-    TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    TOKEN: ${{ secrets.TEST_PACKAGE__RELEASE_DELETE_KEY }}
 ```
 
 ## Example to take input from user and manually trigger github action
@@ -77,5 +77,5 @@ jobs:
           PACKAGE_TYPE: npm
           PACKAGE_NAME: package
           VERSION: ${{ github.event.inputs.version }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.TEST_PACKAGE__RELEASE_DELETE_KEY }}
 ```
