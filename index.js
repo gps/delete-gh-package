@@ -10,7 +10,7 @@ function getVersionId(packages, version)  {
     }
 }
 
-async function FindAndDeletePackageVersion(org, package_type, package_name, version, token) {
+async function findAndDeletePackageVersion(org, package_type, package_name, version, token) {
     const octokit = new Octokit({ auth: token });
 
     // Handle response
@@ -75,14 +75,13 @@ async function deletePackageVersion(org, package_type, package_name, version, ve
 }
 
 async function run() {
-    // should be made const when deploying 
-    var org = core.getInput("ORG");
-    var package_type = core.getInput("PACKAGE_TYPE");
-    var package_name = core.getInput("PACKAGE_NAME");
-    var version =  core.getInput("VERSION");
-    var token = core.getInput("TOKEN");
+    const org = core.getInput("ORG");
+    const package_type = core.getInput("PACKAGE_TYPE");
+    const package_name = core.getInput("PACKAGE_NAME");
+    const version =  core.getInput("VERSION");
+    const token = core.getInput("TOKEN");
 
-    FindAndDeletePackageVersion(org, package_type, package_name, version, token);
+    findAndDeletePackageVersion(org, package_type, package_name, version, token);
 }
 
 run();
