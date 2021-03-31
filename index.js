@@ -2,6 +2,7 @@ const { Octokit } = require("@octokit/core");
 const { request } = require("@octokit/request");
 const { withCustomRequest } = require("@octokit/graphql");
 const core = require("@actions/core");
+const env = process.env;
 
 // getVersionId returns version id for a given version
 function getVersionId(packages, version)  {
@@ -130,25 +131,12 @@ async function getPackageNames(owner, repo, package_type, token) {
 
 async function run() {
     const org = core.getInput("ORG");
-    var owner = core.getInput("OWNER");
-    const repo = core.getInput("REPO");
     const package_type = core.getInput("PACKAGE_TYPE");
     const version =  core.getInput("VERSION");
     const token = core.getInput("TOKEN");
+    const owner = env.GITHUB_REPOSITORY.split("/")[0];
+    const repo = env.GITHUB_REPOSITORY.split("/")[1];
 
-    if (org != null && org != "" && owner != null && owner != "") {
-        if (org != owner) {
-            core.setFailed(`ORG and OWNER cannot have different values`);
-            return;
-        }
-    }
-    if ((org == null || org == "") && (owner == null || owner == "")) {
-        core.setFailed(`both ORG and OWNER cannot be empty`);
-        return;
-    }
-    if ((owner == null || owner == "") && org != null && org != "") {
-        owner = org;
-    }
     var packageNames = await getPackageNames(owner, repo, package_type, token)
     for (i = 0; i< packageNames.length; i++) {
         findAndDeletePackageVersion(org, package_type, packageNames[i], version, token);
