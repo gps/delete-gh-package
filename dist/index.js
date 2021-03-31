@@ -37,6 +37,7 @@ async function findAndDeletePackageVersion(org, package_type, package_name, vers
     // Handle error
     octokit.hook.error("request", async (error, options) => {
         core.setFailed(error.message);
+        return;
     });
 
     if (org === null || org === "") {
@@ -66,6 +67,7 @@ async function deletePackageVersion(org, package_type, package_name, version, ve
         if (error != null) {
             console.log(`Unable to delete version ${version} for package: ${package_name}. Error: ${error}`)
             core.setFailed(error);
+            return;
         }
     });
 
@@ -129,6 +131,7 @@ async function getPackageNames(owner, repo, package_type, token) {
         return packageNames;
     } catch (error) {
         core.setFailed(error);
+        return;
     }
 }
 
@@ -141,12 +144,13 @@ async function run() {
     const token = core.getInput("TOKEN");
 
     if (org != null && owner != null) {
-        if (org != owner) {
-            core.setFailed(`ORG and OWNER cannot have different values`);
-        }
+        core.setFailed(`both ORG and OWNER cannot be empty`);
+        return;
     }
+
     if (org == null && owner == null) {
         core.setFailed(`both ORG and OWNER cannot be empty`);
+        return;
     }
     if (owner == null && org != null) {
         owner = org;
