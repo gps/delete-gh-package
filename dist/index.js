@@ -143,18 +143,22 @@ async function run() {
     const version =  core.getInput("VERSION");
     const token = core.getInput("TOKEN");
 
-    if (org != null && owner != null) {
-        core.setFailed(`both ORG and OWNER cannot be empty`);
-        return;
+    if (org != null && org != "" && owner != null && owner != "") {
+      if (org != owner) {
+          core.setFailed(`ORG and OWNER cannot have different values`);
+          return;
+      }
     }
 
-    if (org == null && owner == null) {
-        core.setFailed(`both ORG and OWNER cannot be empty`);
-        return;
+    if ((org == null || org == "") && (owner == null || owner == "")) {
+      core.setFailed(`both ORG and OWNER cannot be empty`);
+      return;
     }
-    if (owner == null && org != null) {
-        owner = org;
+
+    if ((owner == null || owner == "") && org != null && org != "") {
+      owner = org;
     }
+
     var packageNames = await getPackageNames(owner, repo, package_type, token)
     for (i = 0; i< packageNames.length; i++) {
         findAndDeletePackageVersion(org, package_type, packageNames[i], version, token);
